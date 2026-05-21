@@ -10,6 +10,7 @@ import { Orders } from './screens/Orders';
 import { OrderEditor } from './screens/OrderEditor';
 import { OrderDetail } from './screens/OrderDetail';
 import { Settings } from './screens/Settings';
+import { Templates } from './screens/Templates';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="/orders/new" element={<OrderEditor />} />
               <Route path="/orders/:id" element={<OrderDetail />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/templates" element={<Templates />} />
             </Routes>
           </main>
           <TabBar />

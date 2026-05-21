@@ -1,5 +1,6 @@
 import React from 'react';
 import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
 import { useStore } from '../store/useStore';
 import { useT } from '../i18n/useT';
@@ -7,6 +8,7 @@ import { setLanguage } from '../firebase/repo';
 
 export function Settings() {
   const t = useT();
+  const navigate = useNavigate();
   const settings = useStore((s) => s.settings);
   const currentLang = settings?.language ?? 'en';
 
@@ -59,6 +61,16 @@ export function Settings() {
               ગુજરાતી (Gujarati)
             </button>
           </div>
+        </div>
+
+        <div style={styles.section}>
+          <h3 style={styles.sectionTitle}>{t('settings.templates')}</h3>
+          <button
+            onClick={() => navigate('/templates')}
+            style={styles.templatesBtn}
+          >
+            {t('settings.templates')}
+          </button>
         </div>
 
         <div style={styles.section}>
@@ -127,6 +139,20 @@ const styles: Record<string, React.CSSProperties> = {
     transition: 'all 0.2s ease',
     boxSizing: 'border-box',
     textAlign: 'center',
+  },
+  templatesBtn: {
+    width: '100%',
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    background: 'rgba(255, 255, 255, 0.05)',
+    color: '#ffffff',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    textAlign: 'center',
+    marginBottom: '8px',
   },
   signOutBtn: {
     width: '100%',
