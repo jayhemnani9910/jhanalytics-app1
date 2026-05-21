@@ -11,6 +11,8 @@ export function Settings() {
   const navigate = useNavigate();
   const settings = useStore((s) => s.settings);
   const currentLang = settings?.language ?? 'en';
+  const currentTheme = settings?.theme ?? 'dark';
+  const currentScale = settings?.textScale ?? 'normal';
 
   const [shopName, setShopName] = React.useState(settings?.shopName || '');
 
@@ -25,6 +27,22 @@ export function Settings() {
       await setLanguage(lang);
     } catch (err) {
       console.error('Error changing language:', err);
+    }
+  };
+
+  const handleThemeToggle = async (theme: 'dark' | 'light') => {
+    try {
+      await updateSettings({ theme });
+    } catch (err) {
+      console.error('Error changing theme:', err);
+    }
+  };
+
+  const handleTextScaleToggle = async (textScale: 'normal' | 'large') => {
+    try {
+      await updateSettings({ textScale });
+    } catch (err) {
+      console.error('Error changing text scale:', err);
     }
   };
 
@@ -66,9 +84,9 @@ export function Settings() {
               onClick={() => handleLanguageToggle('en')}
               style={{
                 ...styles.toggleBtn,
-                background: currentLang === 'en' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'rgba(255, 255, 255, 0.05)',
-                color: '#ffffff',
-                border: currentLang === 'en' ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                background: currentLang === 'en' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'var(--surface-2)',
+                color: currentLang === 'en' ? '#ffffff' : 'var(--text)',
+                border: currentLang === 'en' ? 'none' : '1px solid var(--border)',
                 boxShadow: currentLang === 'en' ? '0 4px 14px rgba(124, 58, 237, 0.4)' : 'none',
               }}
             >
@@ -78,13 +96,73 @@ export function Settings() {
               onClick={() => handleLanguageToggle('gu')}
               style={{
                 ...styles.toggleBtn,
-                background: currentLang === 'gu' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'rgba(255, 255, 255, 0.05)',
-                color: '#ffffff',
-                border: currentLang === 'gu' ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                background: currentLang === 'gu' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'var(--surface-2)',
+                color: currentLang === 'gu' ? '#ffffff' : 'var(--text)',
+                border: currentLang === 'gu' ? 'none' : '1px solid var(--border)',
                 boxShadow: currentLang === 'gu' ? '0 4px 14px rgba(124, 58, 237, 0.4)' : 'none',
               }}
             >
               ગુજરાતી (Gujarati)
+            </button>
+          </div>
+        </div>
+
+        <div style={styles.section}>
+          <h3 style={styles.sectionTitle}>{t('settings.theme')}</h3>
+          <div style={styles.btnGroup}>
+            <button
+              onClick={() => handleThemeToggle('dark')}
+              style={{
+                ...styles.toggleBtn,
+                background: currentTheme === 'dark' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'var(--surface-2)',
+                color: currentTheme === 'dark' ? '#ffffff' : 'var(--text)',
+                border: currentTheme === 'dark' ? 'none' : '1px solid var(--border)',
+                boxShadow: currentTheme === 'dark' ? '0 4px 14px rgba(124, 58, 237, 0.4)' : 'none',
+              }}
+            >
+              {t('settings.dark')}
+            </button>
+            <button
+              onClick={() => handleThemeToggle('light')}
+              style={{
+                ...styles.toggleBtn,
+                background: currentTheme === 'light' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'var(--surface-2)',
+                color: currentTheme === 'light' ? '#ffffff' : 'var(--text)',
+                border: currentTheme === 'light' ? 'none' : '1px solid var(--border)',
+                boxShadow: currentTheme === 'light' ? '0 4px 14px rgba(124, 58, 237, 0.4)' : 'none',
+              }}
+            >
+              {t('settings.light')}
+            </button>
+          </div>
+        </div>
+
+        <div style={styles.section}>
+          <h3 style={styles.sectionTitle}>{t('settings.textSize')}</h3>
+          <div style={styles.btnGroup}>
+            <button
+              onClick={() => handleTextScaleToggle('normal')}
+              style={{
+                ...styles.toggleBtn,
+                background: currentScale === 'normal' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'var(--surface-2)',
+                color: currentScale === 'normal' ? '#ffffff' : 'var(--text)',
+                border: currentScale === 'normal' ? 'none' : '1px solid var(--border)',
+                boxShadow: currentScale === 'normal' ? '0 4px 14px rgba(124, 58, 237, 0.4)' : 'none',
+              }}
+            >
+              {t('settings.normal')}
+            </button>
+            <button
+              onClick={() => handleTextScaleToggle('large')}
+              style={{
+                ...styles.toggleBtn,
+                background: currentScale === 'large' ? 'linear-gradient(135deg, #a855f7, #7c3aed)' : 'var(--surface-2)',
+                color: currentScale === 'large' ? '#ffffff' : 'var(--text)',
+                border: currentScale === 'large' ? 'none' : '1px solid var(--border)',
+                boxShadow: currentScale === 'large' ? '0 4px 14px rgba(124, 58, 237, 0.4)' : 'none',
+              }}
+            >
+              {t('settings.large')}
             </button>
           </div>
         </div>
@@ -117,8 +195,8 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     padding: '24px 16px 88px 16px',
     minHeight: '100vh',
-    background: 'radial-gradient(circle at top right, #1f2937, #111827)',
-    color: '#ffffff',
+    background: 'var(--bg)',
+    color: 'var(--text)',
     fontFamily: '"Inter", "Noto Sans Gujarati", sans-serif',
     display: 'flex',
     flexDirection: 'column',
@@ -128,17 +206,17 @@ const styles: Record<string, React.CSSProperties> = {
   card: {
     width: '100%',
     maxWidth: '500px',
-    background: 'rgba(255, 255, 255, 0.05)',
+    background: 'var(--surface)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '24px',
-    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+    boxShadow: 'none',
     boxSizing: 'border-box',
     marginTop: '20px',
   },
   title: {
-    fontSize: '24px',
+    fontSize: 'calc(24px * var(--font-scale))',
     fontWeight: '600',
     margin: '0 0 24px 0',
   },
@@ -146,19 +224,19 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: '24px',
   },
   sectionTitle: {
-    fontSize: '14px',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontWeight: '500',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     marginBottom: '12px',
   },
   input: {
     width: '100%',
     padding: '12px',
     borderRadius: '8px',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    background: 'rgba(255, 255, 255, 0.05)',
-    color: '#ffffff',
-    fontSize: '14px',
+    border: '1px solid var(--border)',
+    background: 'var(--surface-2)',
+    color: 'var(--text)',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontFamily: 'inherit',
     outline: 'none',
     boxSizing: 'border-box',
@@ -172,7 +250,7 @@ const styles: Record<string, React.CSSProperties> = {
   toggleBtn: {
     padding: '12px',
     borderRadius: '8px',
-    fontSize: '14px',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
@@ -183,10 +261,10 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     padding: '12px',
     borderRadius: '8px',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    background: 'rgba(255, 255, 255, 0.05)',
-    color: '#ffffff',
-    fontSize: '14px',
+    border: '1px solid var(--border)',
+    background: 'var(--surface-2)',
+    color: 'var(--text)',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
@@ -197,10 +275,10 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     padding: '12px',
     borderRadius: '8px',
-    border: '1px solid rgba(239, 68, 68, 0.4)',
-    background: 'rgba(239, 68, 68, 0.1)',
-    color: '#ef4444',
-    fontSize: '14px',
+    border: '1px solid color-mix(in srgb, var(--danger) 40%, transparent)',
+    background: 'color-mix(in srgb, var(--danger) 10%, transparent)',
+    color: 'var(--danger)',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
