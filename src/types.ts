@@ -62,6 +62,8 @@ export interface AppSettings {
   language: Language;
   shopName?: string;
   seeded: boolean;
+  theme?: 'dark' | 'light';
+  textScale?: 'normal' | 'large';
 }
 
 export type DeadlineBucket = 'overdue' | 'due-soon' | 'upcoming';
