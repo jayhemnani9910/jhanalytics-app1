@@ -50,8 +50,8 @@ export function CustomerPicker({ value, onSelect, disabled }: CustomerPickerProp
     setGender('female');
   };
 
-  const handleSaveInline = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveInline = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     const trimmedName = query.trim();
     if (!trimmedName) return;
 
@@ -96,7 +96,7 @@ export function CustomerPicker({ value, onSelect, disabled }: CustomerPickerProp
   return (
     <div style={styles.container}>
       {isAddingInline ? (
-        <form onSubmit={handleSaveInline} style={styles.inlineForm}>
+        <div style={styles.inlineForm}>
           <div style={styles.formTitle}>
             {t('customers.addCustomer') || 'Add Customer'}: <strong>{query.trim()}</strong>
           </div>
@@ -119,14 +119,14 @@ export function CustomerPicker({ value, onSelect, disabled }: CustomerPickerProp
             </select>
           </div>
           <div style={styles.btnRow}>
-            <button type="submit" style={styles.saveBtn}>
+            <button type="button" onClick={() => handleSaveInline()} style={styles.saveBtn}>
               {t('common.save') || 'Save'}
             </button>
             <button type="button" onClick={handleCancelInline} style={styles.cancelBtn}>
               {t('common.cancel') || 'Cancel'}
             </button>
           </div>
-        </form>
+        </div>
       ) : (
         <>
           <div style={styles.searchWrapper}>

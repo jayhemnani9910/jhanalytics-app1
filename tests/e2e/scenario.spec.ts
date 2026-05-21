@@ -232,8 +232,103 @@ test.describe('Tailor App E2E Driving Scenario', () => {
     await expect(page.locator('[data-testid="section-balance-due"] h2')).toHaveText('બાકી રકમ'); // Balance due in Gujarati
 
     // Toggle back to English
-    await page.click('#bottom-tab-bar >> text=સેટિંગ');
+    await page.click('#bottom-tab-bar >> text=Settings');
     await page.click('button:has-text("English")');
     await expect(page.locator('#bottom-tab-bar >> text=Settings')).toBeVisible();
+  });
+
+  test('v2 enhancements workflow: inline customer add, deadline chips, paid button, global search, one-tap ready, theme toggle', async ({ page }) => {
+    // 1. Visit Login screen and log in
+    await page.goto('/');
+    await expect(page.locator('#login-email')).toBeVisible();
+    
+    await page.fill('#login-email', 'shop@example.com');
+    await page.fill('#login-password', 'password123');
+    await page.click('#login-submit');
+
+    // Expect to be authenticated and redirect to dashboard (Home)
+    await expect(page.locator('#bottom-tab-bar')).toBeVisible();
+
+    // 2. Go to Orders screen and click New Order
+    await page.click('#bottom-tab-bar >> text=Orders');
+    await page.click('button:has-text("New order")');
+    await expect(page.locator('h1:has-text("New Order")')).toBeVisible();
+
+    // 3. Search and add a brand-new customer inline using CustomerPicker
+    await page.fill('input[placeholder="Select Customer"]', 'Devi Vyas');
+    // Wait for the inline add button to appear and click it
+    const addInlineBtn = page.locator('text=＋ Add: "Devi Vyas"');
+    await expect(addInlineBtn).toBeVisible();
+    await addInlineBtn.click();
+
+    // Fill phone in the inline form and click Save
+    await page.fill('input[placeholder="Phone Number"]', '9876501234');
+    await page.click('button:has-text("Save")');
+
+    // Verify customer is successfully selected inline
+    await expect(page.locator('text=Devi Vyas')).toBeVisible();
+    await expect(page.locator('button:has-text("Change")')).toBeVisible();
+
+    // 4. Use a deadline chip to set the deadline (+7 Days)
+    await page.click('button:has-text("+7")');
+    const deadlineVal = await page.locator('input[type="date"]').inputValue();
+    expect(deadlineVal).not.toBe('');
+
+    // 5. Fill garment price (G1 price is at index 2 since 1st is Advance, 2nd is G1 quantity)
+    // First garment is auto-added
+    await page.fill('input[type="number"] >> nth=2', '400');
+
+    // 6. Click "Fully paid" to match advance payment to total
+    await page.click('button:has-text("Fully paid")');
+    const advanceVal = await page.locator('input[type="number"] >> nth=0').inputValue();
+    expect(advanceVal).toBe('400');
+
+    // Save the order
+    await page.click('button[type="submit"]');
+
+    // Expect to return to Customer Details page for Devi Vyas
+    await expect(page.locator('h1:has-text("Devi Vyas")')).toBeVisible();
+    await expect(page.locator('text=Order History')).toBeVisible();
+
+    // Grab the 4-digit token
+    const tokenText = await page.locator('span:has-text("TOKEN") + span').textContent();
+    expect(tokenText).toMatch(/^\d{4}$/);
+
+    // 7. Go to Home, type Devi Vyas in Global Search, and navigate to the order
+    await page.click('#bottom-tab-bar >> text=Home');
+    await page.fill('input[placeholder="Search name, phone, token..."]', 'Devi Vyas');
+    
+    // Expect global search result to appear
+    const searchResult = page.locator(`a:has-text("Devi Vyas")`).first();
+    await expect(searchResult).toBeVisible();
+    await searchResult.click();
+
+    // 8. We are now on Order Details. Perform one-tap order status advance
+    await expect(page.locator('h1:has-text("Order Details")')).toBeVisible();
+    await expect(page.locator(`h2:has-text("#${tokenText}")`)).toBeVisible();
+
+    // Advance all to Ready
+    const markReadyBtn = page.locator('button:has-text("Mark all as Ready")');
+    await expect(markReadyBtn).toBeVisible();
+    await markReadyBtn.click();
+
+    // Verify rollup status is updated to Ready
+    await expect(page.locator('span:has-text("Ready")')).toBeVisible();
+
+    // 9. Go to Settings, toggle Light theme and Large text
+    await page.click('#bottom-tab-bar >> text=Settings');
+    await expect(page.locator('h1:has-text("Settings")')).toBeVisible();
+
+    // Select Light theme
+    await page.click('button:has-text("Light")');
+    // Select Large text
+    await page.click('button:has-text("Large")');
+
+    // Verify toggling works and UI stays robustly responsive
+    await expect(page.locator('h1:has-text("Settings")')).toBeVisible();
+
+    // Restore standard dark and normal settings
+    await page.click('button:has-text("Dark")');
+    await page.click('button:has-text("Normal")');
   });
 });
