@@ -11,6 +11,8 @@ export const en: Record<string, string> = {
   'common.newOrder': 'New order',
   'common.save': 'Save',
   'common.cancel': 'Cancel',
+  'common.change': 'Change',
+  'common.add': 'Add',
   'common.offline': 'Offline',
   'common.online': 'Online',
   'settings.language': 'App Language',

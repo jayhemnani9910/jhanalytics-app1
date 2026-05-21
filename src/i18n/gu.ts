@@ -11,6 +11,8 @@ export const gu: Record<string, string> = {
   'common.newOrder': 'નવો ઓર્ડર',
   'common.save': 'સાચવો',
   'common.cancel': 'રદ કરો',
+  'common.change': 'બદલો',
+  'common.add': 'ઉમેરો',
   'common.offline': 'ઓફલાઇન',
   'common.online': 'ઓનલાઇન',
   'settings.language': 'એપ ભાષા',
