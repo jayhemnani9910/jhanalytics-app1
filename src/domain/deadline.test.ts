@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { deadlineBucket, DUE_SOON_DAYS } from './deadline';
+import { deadlineBucket, DUE_SOON_DAYS, addDays } from './deadline';
 
 // today is fixed as 2026-06-01 for these tests
 const today = '2026-06-01';
@@ -21,4 +21,9 @@ describe('deadlineBucket', () => {
   it('DUE_SOON_DAYS is 3', () => {
     expect(DUE_SOON_DAYS).toBe(3);
   });
+});
+
+describe('addDays', () => {
+  it('adds days across month boundaries', () => { expect(addDays('2026-06-28', 7)).toBe('2026-07-05'); });
+  it('adds zero', () => { expect(addDays('2026-06-01', 0)).toBe('2026-06-01'); });
 });
