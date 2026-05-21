@@ -11,4 +11,9 @@ export const gu: Record<string, string> = {
   'common.newOrder': 'નવો ઓર્ડર',
   'common.save': 'સાચવો',
   'common.cancel': 'રદ કરો',
+  'login.title': 'દુકાન લોગિન',
+  'login.email': 'ઈમેલ સરનામું',
+  'login.password': 'પાસવર્ડ',
+  'login.submit': 'લોગિન કરો',
+  'login.error': 'ખોટો ઈમેલ અથવા પાસવર્ડ',
 };

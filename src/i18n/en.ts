@@ -11,5 +11,10 @@ export const en: Record<string, string> = {
   'common.newOrder': 'New order',
   'common.save': 'Save',
   'common.cancel': 'Cancel',
+  'login.title': 'Shop Login',
+  'login.email': 'Email Address',
+  'login.password': 'Password',
+  'login.submit': 'Login',
+  'login.error': 'Invalid email or password',
   '__missing__': 'Fallback Value',
 };
