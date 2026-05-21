@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { orderStatusRollup } from './status';
+import { orderStatusRollup, nextBulkStatus, setAllItemsStatus } from './status';
 import type { OrderItem } from '../types';
 
 const item = (status: OrderItem['status']): OrderItem => ({ itemId: 'x', garmentType: 'B', templateId: null, quantity: 1, measurements: [], status });
@@ -19,5 +19,23 @@ describe('orderStatusRollup', () => {
   });
   it('is pending for empty list', () => {
     expect(orderStatusRollup([])).toBe('pending');
+  });
+});
+
+describe('nextBulkStatus', () => {
+  it('pending advances to ready', () => { expect(nextBulkStatus('pending')).toBe('ready'); });
+  it('ready advances to delivered', () => { expect(nextBulkStatus('ready')).toBe('delivered'); });
+  it('delivered has no next', () => { expect(nextBulkStatus('delivered')).toBeNull(); });
+});
+
+describe('setAllItemsStatus', () => {
+  it('sets every item to the given status', () => {
+    const items = [
+      { itemId: 'a', garmentType: 'X', templateId: null, quantity: 1, measurements: [], status: 'pending' as const },
+      { itemId: 'b', garmentType: 'Y', templateId: null, quantity: 1, measurements: [], status: 'ready' as const },
+    ];
+    const out = setAllItemsStatus(items, 'delivered');
+    expect(out.every((i) => i.status === 'delivered')).toBe(true);
+    expect(out).not.toBe(items); // returns a new array
   });
 });
