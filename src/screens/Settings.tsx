@@ -4,13 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
 import { useStore } from '../store/useStore';
 import { useT } from '../i18n/useT';
-import { setLanguage } from '../firebase/repo';
+import { setLanguage, updateSettings } from '../firebase/repo';
 
 export function Settings() {
   const t = useT();
   const navigate = useNavigate();
   const settings = useStore((s) => s.settings);
   const currentLang = settings?.language ?? 'en';
+
+  const [shopName, setShopName] = React.useState(settings?.shopName || '');
+
+  React.useEffect(() => {
+    if (settings?.shopName !== undefined) {
+      setShopName(settings.shopName);
+    }
+  }, [settings?.shopName]);
 
   const handleLanguageToggle = async (lang: 'en' | 'gu') => {
     try {
@@ -32,6 +40,24 @@ export function Settings() {
     <div style={styles.container}>
       <div style={styles.card}>
         <h1 style={styles.title}>{t('nav.settings')}</h1>
+
+        <div style={styles.section}>
+          <h3 style={styles.sectionTitle}>{t('settings.shopName')}</h3>
+          <input
+            type="text"
+            value={shopName}
+            onChange={(e) => setShopName(e.target.value)}
+            onBlur={async () => {
+              try {
+                await updateSettings({ shopName: shopName.trim() });
+              } catch (err) {
+                console.error('Error updating shop name:', err);
+              }
+            }}
+            placeholder="e.g. Pareshbhai Tailor"
+            style={styles.input}
+          />
+        </div>
 
         <div style={styles.section}>
           <h3 style={styles.sectionTitle}>{t('settings.language')}</h3>
@@ -124,6 +150,19 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: '500',
     color: '#9ca3af',
     marginBottom: '12px',
+  },
+  input: {
+    width: '100%',
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    background: 'rgba(255, 255, 255, 0.05)',
+    color: '#ffffff',
+    fontSize: '14px',
+    fontFamily: 'inherit',
+    outline: 'none',
+    boxSizing: 'border-box',
+    transition: 'border-color 0.2s ease',
   },
   btnGroup: {
     display: 'grid',

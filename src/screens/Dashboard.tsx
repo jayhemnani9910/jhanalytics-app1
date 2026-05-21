@@ -15,6 +15,7 @@ export function Dashboard() {
   const orders = useStore((s) => s.orders);
   const customers = useStore((s) => s.customers);
   const ready = useStore((s) => s.ready);
+  const settings = useStore((s) => s.settings);
 
   const today = todayStr();
   const buckets = bucketOrders(orders, today);
@@ -126,7 +127,7 @@ export function Dashboard() {
         {/* Hero Welcome banner */}
         <div style={styles.welcomeBanner}>
           <div style={styles.welcomeLeft}>
-            <h1 style={styles.shopTitle}>Pareshbhai Tailor</h1>
+            <h1 style={styles.shopTitle}>{settings?.shopName || 'Tailor'}</h1>
             <p style={styles.shopSubtitle}>Tailor Measurement & Order Sync</p>
           </div>
           <button

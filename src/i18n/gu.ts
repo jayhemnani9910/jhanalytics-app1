@@ -16,6 +16,7 @@ export const gu: Record<string, string> = {
   'common.offline': 'ઓફલાઇન',
   'common.online': 'ઓનલાઇન',
   'settings.language': 'એપ ભાષા',
+  'settings.shopName': 'દુકાનનું નામ',
   'settings.logout': 'લોગઆઉટ / સાઇન આઉટ',
   'settings.templates': 'વસ્ત્રોના નમૂનાઓ',
   'templates.title': 'વસ્ત્રોના નમૂનાઓ (Templates)',

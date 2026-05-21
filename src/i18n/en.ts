@@ -16,6 +16,7 @@ export const en: Record<string, string> = {
   'common.offline': 'Offline',
   'common.online': 'Online',
   'settings.language': 'App Language',
+  'settings.shopName': 'Shop Name',
   'settings.logout': 'Logout / Sign Out',
   'settings.templates': 'Garment Templates',
   'templates.title': 'Garment Templates',

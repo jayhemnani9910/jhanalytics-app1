@@ -1,6 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from './config';
-import type { Customer, Order, Template, Language } from '../types';
+import type { Customer, Order, Template, Language, AppSettings } from '../types';
 
 export async function createCustomer(data: Omit<Customer, 'id' | 'nameLower' | 'createdAt' | 'updatedAt'>) {
   return addDoc(collection(db, 'customers'), {
@@ -57,4 +57,8 @@ export async function deleteTemplate(id: string) {
 
 export async function setLanguage(language: Language) {
   return setDoc(doc(db, 'settings', 'app'), { language }, { merge: true });
+}
+
+export async function updateSettings(patch: Partial<AppSettings>) {
+  return setDoc(doc(db, 'settings', 'app'), patch, { merge: true });
 }
