@@ -80,6 +80,7 @@ export const gu: Record<string, string> = {
   'orders.addPhoto': 'ફોટો ઉમેરો',
   'orders.updateStatusError': 'સ્થિતિ સુધારવામાં ભૂલ આવી',
   'orders.deleteError': 'ઓર્ડર કાઢી નાખવામાં ભૂલ આવી',
+  'orders.noOrders': 'કોઈ ઓર્ડર મળ્યા નથી.',
   'orders.itemTotal': 'વસ્તુ કુલ કિંમત',
   'orders.custom': 'વૈવિધ્યપૂર્ણ ખાનું',
   'orders.upcoming': 'આવનાર',

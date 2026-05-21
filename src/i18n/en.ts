@@ -80,6 +80,7 @@ export const en: Record<string, string> = {
   'orders.addPhoto': 'Add Photo',
   'orders.updateStatusError': 'Error updating status',
   'orders.deleteError': 'Error deleting order',
+  'orders.noOrders': 'No orders found.',
   'orders.itemTotal': 'Item Total',
   'orders.custom': 'Custom Row',
   'orders.upcoming': 'Upcoming',

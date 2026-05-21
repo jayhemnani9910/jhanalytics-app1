@@ -263,7 +263,7 @@ export function OrderDetail() {
             const itemTotal = (item.quantity || 1) * (item.price || 0);
 
             return (
-              <div key={item.itemId} style={styles.garmentCard}>
+              <div key={item.itemId} data-testid={`garment-card-${item.garmentType || 'custom'}`} style={styles.garmentCard}>
                 {/* Garment Type & Pricing header */}
                 <div style={styles.garmentHeader}>
                   <div style={styles.garmentTypeInfo}>

@@ -495,7 +495,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    zIndex: 1000,
+    zIndex: 2000,
     animation: 'fadeIn 0.3s ease-out',
   },
   modalContent: {

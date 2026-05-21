@@ -31,10 +31,10 @@ export function bucketOrders(orders: Order[], today: string = todayStr()): Dashb
       if (status === 'ready') {
         ready.push(order);
       }
-      
-      if (orderBalance(order) > 0) {
-        balanceDue.push(order);
-      }
+    }
+
+    if (orderBalance(order) > 0) {
+      balanceDue.push(order);
     }
   }
 

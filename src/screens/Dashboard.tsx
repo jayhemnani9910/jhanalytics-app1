@@ -35,15 +35,17 @@ export function Dashboard() {
     title,
     ordersList,
     themeColor,
+    dataTestId,
   }: {
     title: string;
     ordersList: any[];
     themeColor: { bg: string; text: string; border: string };
+    dataTestId?: string;
   }) => {
     if (ordersList.length === 0) return null;
 
     return (
-      <div style={styles.section}>
+      <div data-testid={dataTestId} style={styles.section}>
         <div style={styles.sectionHeader}>
           <h2 style={{ ...styles.sectionTitle, color: themeColor.text }}>{title}</h2>
           <span style={{ ...styles.countBadge, background: themeColor.bg, color: themeColor.text }}>
@@ -143,6 +145,7 @@ export function Dashboard() {
             text: '#ef4444',
             border: 'rgba(239, 68, 68, 0.25)',
           }}
+          dataTestId="section-overdue"
         />
 
         <OrderSection
@@ -153,6 +156,7 @@ export function Dashboard() {
             text: '#f59e0b',
             border: 'rgba(245, 158, 11, 0.25)',
           }}
+          dataTestId="section-due-soon"
         />
 
         <OrderSection
@@ -163,6 +167,7 @@ export function Dashboard() {
             text: '#8b5cf6',
             border: 'rgba(139, 92, 246, 0.25)',
           }}
+          dataTestId="section-ready"
         />
 
         <OrderSection
@@ -173,6 +178,7 @@ export function Dashboard() {
             text: '#fbbf24',
             border: 'rgba(251, 191, 36, 0.25)',
           }}
+          dataTestId="section-balance-due"
         />
 
         {/* Fallback banner if all priority queues are cleared */}
