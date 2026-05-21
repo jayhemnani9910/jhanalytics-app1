@@ -56,6 +56,7 @@ export const gu: Record<string, string> = {
   'orders.markReady': 'બધું તૈયાર તરીકે ચિહ્નિત કરો',
   'orders.markDelivered': 'બધું પહોંચાડાયેલ તરીકે ચિહ્નિત કરો',
   'contact.readyMessage': 'નમસ્તે, તમારો ઓર્ડર તૈયાર છે!',
+  'orders.fullyPaid': 'સંપૂર્ણ ચૂકવેલ',
   'orders.newTitle': 'નવો ઓર્ડર',
   'orders.editTitle': 'ઓર્ડર સંપાદિત કરો',
   'orders.customer': 'ગ્રાહક',

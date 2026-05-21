@@ -6,6 +6,7 @@ import { GarmentItemEditor } from '../components/GarmentItemEditor';
 import { CustomerPicker } from '../components/CustomerPicker';
 import { generateToken } from '../domain/token';
 import { orderStatusRollup } from '../domain/status';
+import { addDays, todayStr } from '../domain/deadline';
 import { orderTotal, orderBalance } from '../domain/money';
 import { createOrder, updateOrder } from '../firebase/repo';
 import type { Order, OrderItem } from '../types';
@@ -78,6 +79,17 @@ export function OrderEditor() {
       if (qCustId) {
         setCustomerId(qCustId);
       }
+      setItems([
+        {
+          itemId: crypto.randomUUID(),
+          garmentType: '',
+          templateId: null,
+          quantity: 1,
+          measurements: [],
+          price: 0,
+          status: 'pending',
+        },
+      ]);
     }
   }, [existingOrder, searchParams]);
 
@@ -225,6 +237,18 @@ export function OrderEditor() {
               style={styles.input}
               required
             />
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+              {([7, 10, 15] as const).map((days) => (
+                <button
+                  key={days}
+                  type="button"
+                  onClick={() => setDeadline(addDays(todayStr(), days))}
+                  style={styles.chipButton}
+                >
+                  +{days}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div style={styles.formGroup}>
@@ -237,6 +261,15 @@ export function OrderEditor() {
               placeholder="0"
               style={styles.input}
             />
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+              <button
+                type="button"
+                onClick={() => setAdvancePaid(totalBill)}
+                style={styles.chipButton}
+              >
+                {t('orders.fullyPaid') || 'Fully Paid'}
+              </button>
+            </div>
           </div>
 
           <div style={styles.formGroup}>
@@ -658,5 +691,16 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     cursor: 'pointer',
     boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+  },
+  chipButton: {
+    padding: '6px 12px',
+    background: 'rgba(255, 255, 255, 0.05)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '8px',
+    color: '#ffffff',
+    fontSize: '13px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 0.15s',
   },
 };

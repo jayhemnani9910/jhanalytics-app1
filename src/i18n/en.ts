@@ -56,6 +56,7 @@ export const en: Record<string, string> = {
   'orders.markReady': 'Mark all as Ready',
   'orders.markDelivered': 'Mark all as Delivered',
   'contact.readyMessage': 'Hello, your order is ready for pickup!',
+  'orders.fullyPaid': 'Fully Paid',
   'orders.newTitle': 'New Order',
   'orders.editTitle': 'Edit Order',
   'orders.customer': 'Customer',
