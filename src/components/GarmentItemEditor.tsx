@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { OrderItem, Template, MeasurementRow, Order, OrderStatus } from '../types';
 import { useT } from '../i18n/useT';
 import { rowsFromTemplate, prefillRows } from '../domain/measurements';
@@ -22,6 +22,7 @@ export function GarmentItemEditor({
 }: GarmentItemEditorProps) {
   const t = useT();
   const [prefillFlag, setPrefillFlag] = useState(false);
+  const valueInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Suggest templates matching gender preference first
   const sortedTemplates = [...templates].sort((a, b) => {
@@ -217,13 +218,35 @@ export function GarmentItemEditor({
                       />
                     )}
 
-                    <input
-                      type="text"
-                      value={row.value}
-                      onChange={(e) => handleMeasurementChange(idx, 'value', e.target.value)}
-                      placeholder="e.g. 38½, loose"
-                      style={styles.valueInput}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <input
+                        ref={(el) => { valueInputRefs.current[idx] = el; }}
+                        type="text"
+                        inputMode="decimal"
+                        value={row.value}
+                        onChange={(e) => handleMeasurementChange(idx, 'value', e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const nextInput = valueInputRefs.current[idx + 1];
+                            if (nextInput) {
+                              nextInput.focus();
+                            } else {
+                              valueInputRefs.current[idx]?.blur();
+                            }
+                          }
+                        }}
+                        placeholder="e.g. 38½, loose"
+                        style={styles.valueInput}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleMeasurementChange(idx, 'value', (row.value || '') + '½')}
+                        style={styles.fractionBtn}
+                      >
+                        ½
+                      </button>
+                    </div>
 
                     {!isTemplateField && (
                       <button
@@ -428,15 +451,31 @@ const styles: Record<string, React.CSSProperties> = {
   },
   valueInput: {
     width: '120px',
+    minHeight: '44px',
     padding: '8px 10px',
     background: '#111827',
     border: '1px solid rgba(255, 255, 255, 0.1)',
     borderRadius: '8px',
     color: '#ffffff',
-    fontSize: '13px',
+    fontSize: '15px',
     outline: 'none',
     boxSizing: 'border-box',
     textAlign: 'right',
+  },
+  fractionBtn: {
+    background: 'rgba(255, 255, 255, 0.08)',
+    border: 'none',
+    borderRadius: '8px',
+    color: '#ffffff',
+    padding: '0 12px',
+    minHeight: '44px',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'background 0.2s',
   },
   deleteRowBtn: {
     background: 'none',
