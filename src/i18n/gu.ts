@@ -55,6 +55,7 @@ export const gu: Record<string, string> = {
   'orders.status.delivered': 'મોકલેલ (Delivered)',
   'orders.markReady': 'બધું તૈયાર તરીકે ચિહ્નિત કરો',
   'orders.markDelivered': 'બધું પહોંચાડાયેલ તરીકે ચિહ્નિત કરો',
+  'contact.readyMessage': 'નમસ્તે, તમારો ઓર્ડર તૈયાર છે!',
   'orders.newTitle': 'નવો ઓર્ડર',
   'orders.editTitle': 'ઓર્ડર સંપાદિત કરો',
   'orders.customer': 'ગ્રાહક',

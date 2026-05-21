@@ -5,6 +5,7 @@ import { useT } from '../i18n/useT';
 import { orderStatusRollup, nextBulkStatus, setAllItemsStatus } from '../domain/status';
 import { orderTotal, orderBalance } from '../domain/money';
 import { deadlineBucket, todayStr } from '../domain/deadline';
+import { buildTelHref, buildWhatsAppHref } from '../domain/contact';
 import { updateOrder, deleteOrder } from '../firebase/repo';
 import type { OrderStatus } from '../types';
 import { usePhotos } from '../photos/usePhotos';
@@ -259,13 +260,24 @@ export function OrderDetail() {
             <div style={styles.customerMeta}>
               <h3 style={styles.customerName}>{customer ? customer.name : 'Unknown Customer'}</h3>
               {customer?.phone && (
-                <a
-                  href={`tel:${customer.phone}`}
-                  onClick={(e) => e.stopPropagation()}
-                  style={styles.phoneLink}
-                >
-                  📞 {customer.phone}
-                </a>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '4px' }}>
+                  <a
+                    href={buildTelHref(customer.phone)}
+                    onClick={(e) => e.stopPropagation()}
+                    style={styles.phoneLink}
+                  >
+                    📞 {customer.phone}
+                  </a>
+                  <a
+                    href={buildWhatsAppHref(customer.phone, t('contact.readyMessage'))}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={styles.waLink}
+                  >
+                    💬 WhatsApp
+                  </a>
+                </div>
               )}
             </div>
           </div>
@@ -647,6 +659,12 @@ const styles: Record<string, React.CSSProperties> = {
   phoneLink: {
     fontSize: '13px',
     color: '#3b82f6',
+    textDecoration: 'none',
+    fontWeight: '500',
+  },
+  waLink: {
+    fontSize: '13px',
+    color: '#10b981',
     textDecoration: 'none',
     fontWeight: '500',
   },
