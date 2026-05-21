@@ -2,9 +2,16 @@ import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, se
 import { db } from './config';
 import type { Customer, Order, Template, Language, AppSettings } from '../types';
 
+// Helper to strip undefined fields to prevent Firestore SDK validation errors
+function cleanUndefined<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== undefined)
+  ) as any;
+}
+
 export async function createCustomer(data: Omit<Customer, 'id' | 'nameLower' | 'createdAt' | 'updatedAt'>) {
   return addDoc(collection(db, 'customers'), {
-    ...data,
+    ...cleanUndefined(data),
     nameLower: data.name.toLowerCase(),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
@@ -12,7 +19,7 @@ export async function createCustomer(data: Omit<Customer, 'id' | 'nameLower' | '
 }
 
 export async function updateCustomer(id: string, patch: Partial<Omit<Customer, 'id' | 'createdAt' | 'updatedAt'>>) {
-  const data: any = { ...patch, updatedAt: serverTimestamp() };
+  const data: any = { ...cleanUndefined(patch), updatedAt: serverTimestamp() };
   if (patch.name) {
     data.nameLower = patch.name.toLowerCase();
   }
@@ -27,7 +34,7 @@ export async function deleteCustomer(customerId: string) {
 
 export async function createOrder(data: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>) {
   return addDoc(collection(db, 'orders'), {
-    ...data,
+    ...cleanUndefined(data),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
@@ -35,7 +42,7 @@ export async function createOrder(data: Omit<Order, 'id' | 'createdAt' | 'update
 
 export async function updateOrder(id: string, patch: Partial<Order>) {
   return updateDoc(doc(db, 'orders', id), {
-    ...patch,
+    ...cleanUndefined(patch),
     updatedAt: serverTimestamp(),
   });
 }
@@ -60,5 +67,5 @@ export async function setLanguage(language: Language) {
 }
 
 export async function updateSettings(patch: Partial<AppSettings>) {
-  return setDoc(doc(db, 'settings', 'app'), patch, { merge: true });
+  return setDoc(doc(db, 'settings', 'app'), cleanUndefined(patch), { merge: true });
 }

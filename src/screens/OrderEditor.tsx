@@ -153,7 +153,9 @@ export function OrderEditor() {
       setFormError(t('orders.requiredDeadline'));
       return;
     }
-    if (items.length === 0) {
+
+    const filteredItems = items.filter((item) => item.garmentType !== '');
+    if (filteredItems.length === 0) {
       setFormError(t('orders.requiredItem'));
       return;
     }
@@ -169,9 +171,10 @@ export function OrderEditor() {
           deadline,
           advancePaid: advancePaid || undefined,
           notes: notes || undefined,
-          items,
+          items: filteredItems,
           photos,
         });
+        navigate(-1);
       } else {
         // Create order, generate token
         const activeTokens = new Set(
@@ -187,11 +190,11 @@ export function OrderEditor() {
           deadline,
           advancePaid: advancePaid || undefined,
           notes: notes || undefined,
-          items,
+          items: filteredItems,
           photos,
         });
+        navigate(`/customers/${customerId}`);
       }
-      navigate(-1);
     } catch (err: any) {
       setFormError(err.message || 'Error saving order');
     } finally {

@@ -4,12 +4,12 @@ test.describe('Tailor App E2E Driving Scenario', () => {
   test.beforeAll(async () => {
     // Hermetic setup: Clear Firestore and Auth emulator states
     // 1. Clear Firestore database
-    await fetch('http://127.0.0.1:8080/emulator/v1/projects/mock-project-id/databases/(default)/documents', {
+    await fetch('http://127.0.0.1:8080/emulator/v1/projects/pareshbhai-tai/databases/(default)/documents', {
       method: 'DELETE',
     });
 
     // 2. Clear Auth users
-    await fetch('http://127.0.0.1:9099/emulator/v1/projects/mock-project-id/accounts', {
+    await fetch('http://127.0.0.1:9099/emulator/v1/projects/pareshbhai-tai/accounts', {
       method: 'DELETE',
     });
 
@@ -96,10 +96,10 @@ test.describe('Tailor App E2E Driving Scenario', () => {
     await page.fill('textarea[placeholder="Order-level instructions..."]', 'Urgent wedding wear');
 
     // Add Garment Item 1: Blouse (₹600)
-    await page.click('button:has-text("Add Garment Item")');
-    await page.selectOption('select >> nth=1', { label: 'Blouse (Female)' });
+    // First garment is auto-added, so we select template on select index 0
+    await page.selectOption('select >> nth=0', { label: 'Blouse (Female)' });
     await page.fill('input[type="number"] >> nth=2', '600'); // Garment 1 price is the 3rd number input (Advance is 1st, Qty is 2nd)
-    
+
     // Enter Blouse measurements
     // Fill first two measurements: Shoulder -> 14, Bust/Chest -> 36
     await page.fill('input[placeholder="e.g. 38½, loose"] >> nth=0', '14');
@@ -107,8 +107,8 @@ test.describe('Tailor App E2E Driving Scenario', () => {
 
     // Add Garment Item 2: Kameez / Kurti (₹800)
     await page.click('button:has-text("Add Garment Item")');
-    // For 2nd garment, template dropdown is select index 2
-    await page.selectOption('select >> nth=2', { label: 'Kameez / Kurti (Female)' });
+    // For 2nd garment, template dropdown is select index 1
+    await page.selectOption('select >> nth=1', { label: 'Kameez / Kurti (Female)' });
     await page.fill('input[type="number"] >> nth=4', '800'); // Garment 2 price is the 5th number input (Advance=0, G1 Qty=1, G1 Price=2, G2 Qty=3, G2 Price=4)
 
     // Enter Kameez measurements
@@ -232,7 +232,7 @@ test.describe('Tailor App E2E Driving Scenario', () => {
     await expect(page.locator('[data-testid="section-balance-due"] h2')).toHaveText('બાકી રકમ'); // Balance due in Gujarati
 
     // Toggle back to English
-    await page.click('#bottom-tab-bar >> text=Settings');
+    await page.click('#bottom-tab-bar >> text=સેટિંગ');
     await page.click('button:has-text("English")');
     await expect(page.locator('#bottom-tab-bar >> text=Settings')).toBeVisible();
   });
@@ -274,8 +274,9 @@ test.describe('Tailor App E2E Driving Scenario', () => {
     const deadlineVal = await page.locator('input[type="date"]').inputValue();
     expect(deadlineVal).not.toBe('');
 
-    // 5. Fill garment price (G1 price is at index 2 since 1st is Advance, 2nd is G1 quantity)
+    // 5. Select template for first garment and fill price (G1 price is at index 2 since 1st is Advance, 2nd is G1 quantity)
     // First garment is auto-added
+    await page.selectOption('select >> nth=0', { label: 'Blouse (Female)' });
     await page.fill('input[type="number"] >> nth=2', '400');
 
     // 6. Click "Fully paid" to match advance payment to total
@@ -299,7 +300,7 @@ test.describe('Tailor App E2E Driving Scenario', () => {
     await page.fill('input[placeholder="Search name, phone, token..."]', 'Devi Vyas');
     
     // Expect global search result to appear
-    const searchResult = page.locator(`a:has-text("Devi Vyas")`).first();
+    const searchResult = page.locator(`a:has-text("#${tokenText}")`).first();
     await expect(searchResult).toBeVisible();
     await searchResult.click();
 

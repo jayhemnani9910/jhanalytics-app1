@@ -100,13 +100,18 @@ export function GlobalSearch() {
                 <div>
                   <div style={styles.sectionHeader}>{t('nav.customers') || 'Customers'}</div>
                   {matchedCustomers.map((c) => (
-                    <div
+                    <a
                       key={c.id}
-                      onClick={() => handleResultClick(`/customers/${c.id}`)}
+                      href={`/customers/${c.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleResultClick(`/customers/${c.id}`);
+                      }}
                       onMouseEnter={() => setHoveredId(c.id)}
                       onMouseLeave={() => setHoveredId(null)}
                       style={{
                         ...styles.resultItem,
+                        textDecoration: 'none',
                         ...(hoveredId === c.id ? { background: 'rgba(255, 255, 255, 0.08)' } : {})
                       }}
                     >
@@ -117,7 +122,7 @@ export function GlobalSearch() {
                         <div style={styles.name}>{c.name}</div>
                         {c.phone && <div style={styles.subtext}>📞 {c.phone}</div>}
                       </div>
-                    </div>
+                    </a>
                   ))}
                 </div>
               )}
@@ -129,13 +134,18 @@ export function GlobalSearch() {
                   {matchedOrders.map((o) => {
                     const cust = customers.find((c) => c.id === o.customerId);
                     return (
-                      <div
+                      <a
                         key={o.id}
-                        onClick={() => handleResultClick(`/orders/${o.id}`)}
+                        href={`/orders/${o.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleResultClick(`/orders/${o.id}`);
+                        }}
                         onMouseEnter={() => setHoveredId(o.id)}
                         onMouseLeave={() => setHoveredId(null)}
                         style={{
                           ...styles.resultItem,
+                          textDecoration: 'none',
                           ...(hoveredId === o.id ? { background: 'rgba(255, 255, 255, 0.08)' } : {})
                         }}
                       >
@@ -148,7 +158,7 @@ export function GlobalSearch() {
                             {o.items.length} garments • Deadline: {o.deadline}
                           </div>
                         </div>
-                      </div>
+                      </a>
                     );
                   })}
                 </div>

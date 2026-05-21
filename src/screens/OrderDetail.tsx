@@ -77,7 +77,7 @@ export function OrderDetail() {
       case 'pending':
         return 'var(--warning)';
       case 'ready':
-        return 'var(--accent)';
+        return '#8b5cf6';
       case 'delivered':
         return 'var(--success)';
       default:

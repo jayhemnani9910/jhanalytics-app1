@@ -127,7 +127,7 @@ export function Dashboard() {
         {/* Hero Welcome banner */}
         <div style={styles.welcomeBanner}>
           <div style={styles.welcomeLeft}>
-            <h1 style={styles.shopTitle}>{settings?.shopName || 'Tailor'}</h1>
+            <h1 style={styles.shopTitle}>{settings?.shopName || 'Pareshbhai Tailor'}</h1>
             <p style={styles.shopSubtitle}>Tailor Measurement & Order Sync</p>
           </div>
           <button
