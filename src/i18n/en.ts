@@ -53,6 +53,8 @@ export const en: Record<string, string> = {
   'orders.status.pending': 'Pending',
   'orders.status.ready': 'Ready',
   'orders.status.delivered': 'Delivered',
+  'orders.markReady': 'Mark all as Ready',
+  'orders.markDelivered': 'Mark all as Delivered',
   'orders.newTitle': 'New Order',
   'orders.editTitle': 'Edit Order',
   'orders.customer': 'Customer',

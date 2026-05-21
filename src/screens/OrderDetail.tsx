@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useT } from '../i18n/useT';
-import { orderStatusRollup } from '../domain/status';
+import { orderStatusRollup, nextBulkStatus, setAllItemsStatus } from '../domain/status';
 import { orderTotal, orderBalance } from '../domain/money';
 import { deadlineBucket, todayStr } from '../domain/deadline';
 import { updateOrder, deleteOrder } from '../firebase/repo';
@@ -52,6 +52,7 @@ export function OrderDetail() {
 
   // Derived attributes
   const rollupStatus = orderStatusRollup(order.items);
+  const nextStatus = nextBulkStatus(rollupStatus);
   const total = orderTotal(order);
   const balance = orderBalance(order);
   const bucket = deadlineBucket(order.deadline, todayStr(), rollupStatus);
@@ -123,6 +124,24 @@ export function OrderDetail() {
         return item;
       });
 
+      await updateOrder(order.id, {
+        items: updatedItems,
+      });
+    } catch (err: any) {
+      setError(err.message || t('orders.updateStatusError'));
+    } finally {
+      setUpdatingItemId(null);
+    }
+  };
+
+  // Click handler to update all items status at once
+  const handleBulkStatusChange = async (newStatus: OrderStatus) => {
+    if (updatingItemId) return;
+    setUpdatingItemId('bulk');
+    setError('');
+
+    try {
+      const updatedItems = setAllItemsStatus(order.items, newStatus);
       await updateOrder(order.id, {
         items: updatedItems,
       });
@@ -213,6 +232,22 @@ export function OrderDetail() {
             </div>
           </div>
         </div>
+
+        {nextStatus && (
+          <button
+            type="button"
+            disabled={!!updatingItemId}
+            onClick={() => handleBulkStatusChange(nextStatus)}
+            style={{
+              ...styles.bulkStatusBtn,
+              backgroundColor: getStatusColor(nextStatus),
+              color: '#ffffff',
+              opacity: updatingItemId ? 0.7 : 1,
+            }}
+          >
+            {nextStatus === 'ready' ? t('orders.markReady') : t('orders.markDelivered')}
+          </button>
+        )}
 
         {/* Customer Information Card */}
         <div
@@ -871,6 +906,18 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '15px',
     fontWeight: '600',
     color: '#f3f4f6',
+  },
+  bulkStatusBtn: {
+    width: '100%',
+    padding: '14px',
+    borderRadius: '16px',
+    fontSize: '16px',
+    fontWeight: '700',
+    cursor: 'pointer',
+    textAlign: 'center',
+    border: 'none',
+    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+    transition: 'all 0.2s',
   },
   dangerZone: {
     marginTop: '16px',
