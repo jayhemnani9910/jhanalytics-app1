@@ -77,6 +77,7 @@ export const en: Record<string, string> = {
   'orders.deleteConfirm': 'Are you sure you want to delete this order?',
   'orders.noPhotos': 'No photos captured yet.',
   'orders.photos': 'Photos',
+  'orders.addPhoto': 'Add Photo',
   'orders.updateStatusError': 'Error updating status',
   'orders.deleteError': 'Error deleting order',
   'orders.itemTotal': 'Item Total',

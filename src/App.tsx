@@ -11,8 +11,10 @@ import { OrderEditor } from './screens/OrderEditor';
 import { OrderDetail } from './screens/OrderDetail';
 import { Settings } from './screens/Settings';
 import { Templates } from './screens/Templates';
+import { usePhotoSync } from './photos/usePhotos';
 
 function App() {
+  usePhotoSync();
   return (
     <BrowserRouter>
       <AuthGate>

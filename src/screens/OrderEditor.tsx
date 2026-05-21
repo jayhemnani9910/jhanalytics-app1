@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useT } from '../i18n/useT';
@@ -8,6 +8,7 @@ import { orderStatusRollup } from '../domain/status';
 import { orderTotal, orderBalance } from '../domain/money';
 import { createOrder, updateOrder } from '../firebase/repo';
 import type { Order, OrderItem } from '../types';
+import { usePhotos } from '../photos/usePhotos';
 
 export function OrderEditor() {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +35,33 @@ export function OrderEditor() {
   // Page level states
   const [formError, setFormError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { compressAndSavePhoto, deletePhotoRef, resolvedUrls, resolvePhotos } = usePhotos();
+
+  useEffect(() => {
+    if (photos.length > 0) {
+      resolvePhotos(photos);
+    }
+  }, [photos, resolvePhotos]);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const localRef = await compressAndSavePhoto(file);
+        setPhotos((prev) => [...prev, localRef]);
+      } catch (err) {
+        console.error('Failed to compress and save photo:', err);
+      }
+    }
+  };
+
+  const handleDeletePhoto = async (photoRef: string) => {
+    const updatedPhotos = photos.filter((p) => p !== photoRef);
+    setPhotos(updatedPhotos);
+    await deletePhotoRef(photoRef, id, photos);
+  };
 
   // Initialize fields
   useEffect(() => {
@@ -133,6 +161,7 @@ export function OrderEditor() {
           advancePaid: advancePaid || undefined,
           notes: notes || undefined,
           items,
+          photos,
         });
       } else {
         // Create order, generate token
@@ -265,6 +294,56 @@ export function OrderEditor() {
                 genderPreference={currentCustomer?.gender}
               />
             ))
+          )}
+        </div>
+
+        {/* Photos Section */}
+        <div style={styles.sectionCard}>
+          <h3 style={styles.sectionTitle}>{t('orders.photos')}</h3>
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+            onChange={handleFileChange}
+          />
+          <button type="button" onClick={() => fileInputRef.current?.click()} style={styles.addPhotoBtn}>
+            📷 {t('orders.addPhoto')}
+          </button>
+
+          {photos.length > 0 ? (
+            <div style={styles.photosGrid}>
+              {photos.map((photo, index) => {
+                const displayUrl = resolvedUrls[photo];
+                return (
+                  <div key={index} style={styles.photoContainer}>
+                    {displayUrl ? (
+                      <img
+                        src={displayUrl}
+                        alt={`Garment ${index + 1}`}
+                        style={styles.photoImg}
+                      />
+                    ) : (
+                      <div style={styles.photoPlaceholder}>
+                        <span style={styles.photoPlaceholderText}>Loading...</span>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleDeletePhoto(photo)}
+                      style={styles.deletePhotoBtn}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div style={styles.emptyPhotos}>
+              <span style={styles.emptyPhotosText}>{t('orders.noPhotos')}</span>
+            </div>
           )}
         </div>
 
@@ -512,5 +591,90 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     boxShadow: '0 4px 14px rgba(59, 130, 246, 0.4)',
     marginTop: '12px',
+  },
+  sectionTitle: {
+    fontSize: '15px',
+    fontWeight: '700',
+    color: '#9ca3af',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    margin: '0 0 12px 0',
+  },
+  addPhotoBtn: {
+    background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '10px',
+    padding: '10px 16px',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    alignSelf: 'flex-start',
+    marginBottom: '12px',
+  },
+  photosGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '8px',
+    marginTop: '12px',
+  },
+  photoContainer: {
+    position: 'relative',
+    aspectRatio: '1',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  photoImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  photoPlaceholder: {
+    width: '100%',
+    height: '100%',
+    background: 'rgba(255, 255, 255, 0.05)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '8px',
+    boxSizing: 'border-box',
+  },
+  photoPlaceholderText: {
+    fontSize: '9px',
+    color: '#9ca3af',
+    textAlign: 'center',
+  },
+  emptyPhotos: {
+    padding: '16px 0',
+    textAlign: 'center',
+    background: 'rgba(0,0,0,0.1)',
+    borderRadius: '12px',
+  },
+  emptyPhotosText: {
+    fontSize: '13px',
+    color: '#6b7280',
+  },
+  deletePhotoBtn: {
+    position: 'absolute',
+    top: '4px',
+    right: '4px',
+    width: '20px',
+    height: '20px',
+    borderRadius: '50%',
+    background: 'rgba(239, 68, 68, 0.85)',
+    border: 'none',
+    color: '#ffffff',
+    fontSize: '11px',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
   },
 };

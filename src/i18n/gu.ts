@@ -77,6 +77,7 @@ export const gu: Record<string, string> = {
   'orders.deleteConfirm': 'શું તમે ખરેખર આ ઓર્ડરને કાઢી નાખવા માંગો છો?',
   'orders.noPhotos': 'હજુ સુધી કોઈ ફોટા લીધેલા નથી.',
   'orders.photos': 'ફોટા',
+  'orders.addPhoto': 'ફોટો ઉમેરો',
   'orders.updateStatusError': 'સ્થિતિ સુધારવામાં ભૂલ આવી',
   'orders.deleteError': 'ઓર્ડર કાઢી નાખવામાં ભૂલ આવી',
   'orders.itemTotal': 'વસ્તુ કુલ કિંમત',

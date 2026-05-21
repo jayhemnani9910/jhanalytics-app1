@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useT } from '../i18n/useT';
@@ -7,6 +7,7 @@ import { orderTotal, orderBalance } from '../domain/money';
 import { deadlineBucket, todayStr } from '../domain/deadline';
 import { updateOrder, deleteOrder } from '../firebase/repo';
 import type { OrderStatus } from '../types';
+import { usePhotos } from '../photos/usePhotos';
 
 export function OrderDetail() {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +27,14 @@ export function OrderDetail() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState('');
+
+  const { deletePhotoRef, resolvedUrls, resolvePhotos } = usePhotos();
+
+  useEffect(() => {
+    if (order?.photos) {
+      resolvePhotos(order.photos);
+    }
+  }, [order?.photos, resolvePhotos]);
 
   if (!order) {
     return (
@@ -334,21 +343,27 @@ export function OrderDetail() {
           {order.photos && order.photos.length > 0 ? (
             <div style={styles.photosGrid}>
               {order.photos.map((photo, index) => {
-                // If it's a local object URL (handled in Phase 8), or a remote Storage URL, render beautifully
-                const isLocal = photo.startsWith('local:');
+                const displayUrl = resolvedUrls[photo];
                 return (
                   <div key={index} style={styles.photoContainer}>
-                    {isLocal ? (
-                      <div style={styles.photoPlaceholder}>
-                        <span style={styles.photoPlaceholderText}>Offline Blob ({photo.slice(6)})</span>
-                      </div>
-                    ) : (
+                    {displayUrl ? (
                       <img
-                        src={photo}
+                        src={displayUrl}
                         alt={`Garment ${index + 1}`}
                         style={styles.photoImg}
                       />
+                    ) : (
+                      <div style={styles.photoPlaceholder}>
+                        <span style={styles.photoPlaceholderText}>Loading...</span>
+                      </div>
                     )}
+                    <button
+                      type="button"
+                      onClick={() => deletePhotoRef(photo, order.id, order.photos)}
+                      style={styles.deletePhotoBtn}
+                    >
+                      ✕
+                    </button>
                   </div>
                 );
               })}
@@ -944,5 +959,23 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
+  },
+  deletePhotoBtn: {
+    position: 'absolute',
+    top: '4px',
+    right: '4px',
+    width: '20px',
+    height: '20px',
+    borderRadius: '50%',
+    background: 'rgba(239, 68, 68, 0.85)',
+    border: 'none',
+    color: '#ffffff',
+    fontSize: '11px',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
   },
 };
