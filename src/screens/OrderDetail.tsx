@@ -75,13 +75,13 @@ export function OrderDetail() {
   const getStatusColor = (status: OrderStatus) => {
     switch (status) {
       case 'pending':
-        return '#fbbf24'; // amber
+        return 'var(--warning)';
       case 'ready':
-        return '#8b5cf6'; // purple
+        return 'var(--accent)';
       case 'delivered':
-        return '#10b981'; // emerald
+        return 'var(--success)';
       default:
-        return '#9ca3af';
+        return 'var(--text-muted)';
     }
   };
 
@@ -101,13 +101,13 @@ export function OrderDetail() {
   const getBucketColor = (b: string) => {
     switch (b) {
       case 'overdue':
-        return '#ef4444'; // Red
+        return 'var(--danger)';
       case 'due-soon':
-        return '#f59e0b'; // Orange
+        return 'var(--warning)';
       case 'upcoming':
-        return '#10b981'; // Green
+        return 'var(--success)';
       default:
-        return '#6b7280';
+        return 'var(--text-muted)';
     }
   };
 
@@ -225,7 +225,7 @@ export function OrderDetail() {
               <span
                 style={{
                   ...styles.quickPricingValue,
-                  color: balance > 0 ? '#fbbf24' : '#10b981',
+                  color: balance > 0 ? 'var(--warning)' : 'var(--success)',
                 }}
               >
                 ₹{balance}
@@ -290,8 +290,8 @@ export function OrderDetail() {
             <div
               style={{
                 ...styles.bucketBadge,
-                backgroundColor: getBucketColor(bucket) + '15',
-                border: `1px solid ${getBucketColor(bucket)}30`,
+                backgroundColor: `color-mix(in srgb, ${getBucketColor(bucket)} 8%, transparent)`,
+                border: `1px solid color-mix(in srgb, ${getBucketColor(bucket)} 20%, transparent)`,
                 color: getBucketColor(bucket),
               }}
             >
@@ -432,16 +432,16 @@ export function OrderDetail() {
             <span style={styles.summaryLabel}>{t('orders.advance')}</span>
             <span style={styles.summaryValue}>- ₹{order.advancePaid || 0}</span>
           </div>
-          <div style={{ ...styles.summaryRow, borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '10px', marginTop: '4px' }}>
-            <span style={{ ...styles.summaryLabel, fontWeight: '700', color: '#ffffff' }}>
+          <div style={{ ...styles.summaryRow, borderTop: '1px solid var(--border)', paddingTop: '10px', marginTop: '4px' }}>
+            <span style={{ ...styles.summaryLabel, fontWeight: '700', color: 'var(--text)' }}>
               {t('orders.balance')}
             </span>
             <span
               style={{
                 ...styles.summaryValue,
                 fontWeight: '800',
-                fontSize: '18px',
-                color: balance > 0 ? '#fbbf24' : '#10b981',
+                fontSize: 'calc(18px * var(--font-scale))',
+                color: balance > 0 ? 'var(--warning)' : 'var(--success)',
               }}
             >
               ₹{balance}
@@ -486,8 +486,8 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     padding: '24px 16px 88px 16px',
     minHeight: '100vh',
-    background: 'radial-gradient(circle at top right, #1f2937, #111827)',
-    color: '#ffffff',
+    background: 'var(--bg)',
+    color: 'var(--text)',
     fontFamily: '"Inter", "Noto Sans Gujarati", sans-serif',
     boxSizing: 'border-box',
     display: 'flex',
@@ -507,34 +507,34 @@ const styles: Record<string, React.CSSProperties> = {
   backBtn: {
     background: 'none',
     border: 'none',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     cursor: 'pointer',
-    fontSize: '15px',
+    fontSize: 'calc(15px * var(--font-scale))',
     fontWeight: '600',
     padding: '4px 0',
   },
   title: {
-    fontSize: '20px',
+    fontSize: 'calc(20px * var(--font-scale))',
     fontWeight: '700',
     margin: 0,
-    color: '#ffffff',
+    color: 'var(--text)',
   },
   editBtn: {
     background: 'none',
     border: 'none',
-    color: '#3b82f6',
+    color: 'var(--accent)',
     cursor: 'pointer',
-    fontSize: '15px',
+    fontSize: 'calc(15px * var(--font-scale))',
     fontWeight: '600',
     padding: '4px 0',
   },
   errorBanner: {
     background: 'rgba(239, 68, 68, 0.15)',
-    border: '1px solid rgba(239, 68, 68, 0.25)',
-    color: '#f87171',
+    border: '1px solid var(--danger)',
+    color: 'var(--danger)',
     padding: '12px 16px',
     borderRadius: '12px',
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     width: '100%',
     maxWidth: '500px',
     boxSizing: 'border-box',
@@ -549,9 +549,9 @@ const styles: Record<string, React.CSSProperties> = {
     boxSizing: 'border-box',
   },
   tokenCard: {
-    background: 'rgba(255, 255, 255, 0.05)',
+    background: 'var(--surface)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    border: '1px solid var(--border)',
     borderRadius: '24px',
     padding: '24px',
     textAlign: 'center',
@@ -566,9 +566,9 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: '8px',
   },
   tokenBadgeLabel: {
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '600',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -578,22 +578,22 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '50%',
   },
   statusText: {
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '600',
     textTransform: 'capitalize',
   },
   tokenNumber: {
-    fontSize: '40px',
+    fontSize: 'calc(40px * var(--font-scale))',
     fontWeight: '800',
     margin: '0 0 16px 0',
-    color: '#ffffff',
+    color: 'var(--text)',
     letterSpacing: '1px',
   },
   quickPricingBar: {
     display: 'flex',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    borderTop: '1px solid rgba(255,255,255,0.08)',
+    borderTop: '1px solid var(--border)',
     paddingTop: '16px',
   },
   quickPricingCol: {
@@ -602,23 +602,23 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
   },
   quickPricingLabel: {
-    fontSize: '11px',
-    color: '#9ca3af',
+    fontSize: 'calc(11px * var(--font-scale))',
+    color: 'var(--text-muted)',
     textTransform: 'uppercase',
     marginBottom: '4px',
   },
   quickPricingValue: {
-    fontSize: '18px',
+    fontSize: 'calc(18px * var(--font-scale))',
     fontWeight: '700',
   },
   quickPricingDivider: {
     width: '1px',
     height: '24px',
-    background: 'rgba(255,255,255,0.1)',
+    background: 'var(--border)',
   },
   infoCard: {
-    background: 'rgba(255, 255, 255, 0.03)',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '20px',
     padding: '16px',
     cursor: 'pointer',
@@ -637,11 +637,11 @@ const styles: Record<string, React.CSSProperties> = {
     width: '44px',
     height: '44px',
     borderRadius: '12px',
-    background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+    background: 'var(--accent)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '16px',
+    fontSize: 'calc(16px * var(--font-scale))',
     fontWeight: '700',
     color: '#ffffff',
   },
@@ -651,20 +651,20 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '2px',
   },
   customerName: {
-    fontSize: '16px',
+    fontSize: 'calc(16px * var(--font-scale))',
     fontWeight: '600',
     margin: 0,
-    color: '#ffffff',
+    color: 'var(--text)',
   },
   phoneLink: {
-    fontSize: '13px',
-    color: '#3b82f6',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--accent)',
     textDecoration: 'none',
     fontWeight: '500',
   },
   waLink: {
-    fontSize: '13px',
-    color: '#10b981',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--success)',
     textDecoration: 'none',
     fontWeight: '500',
   },
@@ -672,7 +672,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    background: 'rgba(0,0,0,0.15)',
+    background: 'var(--surface-2)',
     padding: '10px 12px',
     borderRadius: '12px',
   },
@@ -682,19 +682,19 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '2px',
   },
   infoCardLabel: {
-    fontSize: '11px',
-    color: '#9ca3af',
+    fontSize: 'calc(11px * var(--font-scale))',
+    color: 'var(--text-muted)',
     textTransform: 'uppercase',
   },
   deadlineDate: {
-    fontSize: '14px',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontWeight: '600',
-    color: '#f3f4f6',
+    color: 'var(--text)',
   },
   bucketBadge: {
     padding: '4px 10px',
     borderRadius: '8px',
-    fontSize: '11px',
+    fontSize: 'calc(11px * var(--font-scale))',
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
@@ -704,9 +704,9 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: '2px',
   },
   sectionTitle: {
-    fontSize: '15px',
+    fontSize: 'calc(15px * var(--font-scale))',
     fontWeight: '700',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     margin: 0,
@@ -717,8 +717,8 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '16px',
   },
   garmentCard: {
-    background: 'rgba(255, 255, 255, 0.03)',
-    border: '1px solid rgba(255, 255, 255, 0.06)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '20px',
     padding: '16px',
     boxSizing: 'border-box',
@@ -730,7 +730,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    borderBottom: '1px solid rgba(255,255,255,0.06)',
+    borderBottom: '1px solid var(--border)',
     paddingBottom: '12px',
   },
   garmentTypeInfo: {
@@ -739,19 +739,19 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '4px',
   },
   garmentType: {
-    fontSize: '16px',
+    fontSize: 'calc(16px * var(--font-scale))',
     fontWeight: '700',
     margin: 0,
-    color: '#ffffff',
+    color: 'var(--text)',
   },
   garmentQtyPrice: {
-    fontSize: '13px',
-    color: '#9ca3af',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--text-muted)',
   },
   garmentTotal: {
-    fontSize: '16px',
+    fontSize: 'calc(16px * var(--font-scale))',
     fontWeight: '700',
-    color: '#ffffff',
+    color: 'var(--text)',
   },
   stepperContainer: {
     display: 'flex',
@@ -759,14 +759,14 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '8px',
   },
   stepperLabel: {
-    fontSize: '11px',
-    color: '#9ca3af',
+    fontSize: 'calc(11px * var(--font-scale))',
+    color: 'var(--text-muted)',
     fontWeight: '600',
     textTransform: 'uppercase',
   },
   stepperPills: {
     display: 'flex',
-    background: 'rgba(0,0,0,0.2)',
+    background: 'var(--surface-2)',
     borderRadius: '12px',
     padding: '3px',
     gap: '4px',
@@ -777,7 +777,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '8px 4px',
     border: 'none',
     borderRadius: '9px',
-    fontSize: '12px',
+    fontSize: 'calc(12px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.15s ease',
@@ -789,16 +789,16 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '10px',
   },
   measurementsTitle: {
-    fontSize: '12px',
+    fontSize: 'calc(12px * var(--font-scale))',
     fontWeight: '600',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     margin: 0,
     textTransform: 'uppercase',
   },
   emptyMeasurements: {
     margin: 0,
-    fontSize: '13px',
-    color: '#6b7280',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--text-muted)',
     fontStyle: 'italic',
   },
   measurementsGrid: {
@@ -810,52 +810,52 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    background: 'rgba(255, 255, 255, 0.02)',
-    border: '1px solid rgba(255, 255, 255, 0.04)',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--border)',
     borderRadius: '8px',
     padding: '8px 10px',
   },
   mLabel: {
-    fontSize: '12px',
-    color: '#9ca3af',
+    fontSize: 'calc(12px * var(--font-scale))',
+    color: 'var(--text-muted)',
   },
   mValue: {
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '600',
-    color: '#ffffff',
+    color: 'var(--text)',
   },
   notesCard: {
-    background: 'rgba(251, 191, 36, 0.03)',
-    border: '1px dashed rgba(251, 191, 36, 0.15)',
+    background: 'color-mix(in srgb, var(--warning) 5%, transparent)',
+    border: '1px dashed color-mix(in srgb, var(--warning) 30%, transparent)',
     borderRadius: '16px',
     padding: '14px 16px',
     boxSizing: 'border-box',
   },
   notesLabel: {
-    fontSize: '11px',
+    fontSize: 'calc(11px * var(--font-scale))',
     fontWeight: '600',
-    color: '#fbbf24',
+    color: 'var(--warning)',
     textTransform: 'uppercase',
     display: 'block',
     marginBottom: '4px',
   },
   notesText: {
     margin: 0,
-    fontSize: '13px',
-    color: '#f3f4f6',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--text)',
     lineHeight: '1.5',
   },
   photosSectionCard: {
-    background: 'rgba(255, 255, 255, 0.02)',
-    border: '1px solid rgba(255,255,255,0.05)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '20px',
     padding: '16px',
     boxSizing: 'border-box',
   },
   photosTitle: {
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '700',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     margin: '0 0 12px 0',
     textTransform: 'uppercase',
   },
@@ -869,7 +869,7 @@ const styles: Record<string, React.CSSProperties> = {
     aspectRatio: '1',
     borderRadius: '8px',
     overflow: 'hidden',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    border: '1px solid var(--border)',
   },
   photoImg: {
     width: '100%',
@@ -879,7 +879,7 @@ const styles: Record<string, React.CSSProperties> = {
   photoPlaceholder: {
     width: '100%',
     height: '100%',
-    background: 'rgba(255, 255, 255, 0.05)',
+    background: 'var(--surface)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -887,24 +887,24 @@ const styles: Record<string, React.CSSProperties> = {
     boxSizing: 'border-box',
   },
   photoPlaceholderText: {
-    fontSize: '9px',
-    color: '#9ca3af',
+    fontSize: 'calc(9px * var(--font-scale))',
+    color: 'var(--text-muted)',
     textAlign: 'center',
   },
   emptyPhotos: {
     padding: '24px 0',
     textAlign: 'center',
-    background: 'rgba(0,0,0,0.1)',
+    background: 'var(--surface-2)',
     borderRadius: '12px',
   },
   emptyPhotosText: {
-    fontSize: '13px',
-    color: '#6b7280',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--text-muted)',
   },
   summaryCard: {
-    background: 'rgba(0,0,0,0.25)',
+    background: 'var(--surface-2)',
     borderRadius: '20px',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    border: '1px solid var(--border)',
     padding: '16px',
     boxSizing: 'border-box',
     display: 'flex',
@@ -917,19 +917,19 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
   },
   summaryLabel: {
-    fontSize: '13px',
-    color: '#9ca3af',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--text-muted)',
   },
   summaryValue: {
-    fontSize: '15px',
+    fontSize: 'calc(15px * var(--font-scale))',
     fontWeight: '600',
-    color: '#f3f4f6',
+    color: 'var(--text)',
   },
   bulkStatusBtn: {
     width: '100%',
     padding: '14px',
     borderRadius: '16px',
-    fontSize: '16px',
+    fontSize: 'calc(16px * var(--font-scale))',
     fontWeight: '700',
     cursor: 'pointer',
     textAlign: 'center',
@@ -944,25 +944,25 @@ const styles: Record<string, React.CSSProperties> = {
   deleteBtn: {
     width: '100%',
     padding: '12px',
-    background: 'rgba(239, 68, 68, 0.08)',
-    border: '1px solid rgba(239, 68, 68, 0.2)',
+    background: 'color-mix(in srgb, var(--danger) 8%, transparent)',
+    border: '1px solid color-mix(in srgb, var(--danger) 20%, transparent)',
     borderRadius: '12px',
-    color: '#ef4444',
-    fontSize: '14px',
+    color: 'var(--danger)',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'background 0.2s',
   },
   confirmDeleteBox: {
-    background: 'rgba(239, 68, 68, 0.1)',
-    border: '1px solid rgba(239, 68, 68, 0.25)',
+    background: 'color-mix(in srgb, var(--danger) 10%, transparent)',
+    border: '1px solid color-mix(in srgb, var(--danger) 25%, transparent)',
     borderRadius: '16px',
     padding: '16px',
     textAlign: 'center',
   },
   confirmDeleteText: {
-    fontSize: '13px',
-    color: '#f87171',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--danger)',
     margin: '0 0 12px 0',
     fontWeight: '600',
   },
@@ -972,31 +972,31 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
   },
   deleteConfirmBtn: {
-    background: '#ef4444',
+    background: 'var(--danger)',
     border: 'none',
     borderRadius: '8px',
     color: '#ffffff',
     padding: '8px 16px',
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
   },
   deleteCancelBtn: {
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '8px',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     padding: '8px 16px',
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
   },
   errorCard: {
     width: '100%',
     maxWidth: '500px',
-    background: 'rgba(255, 255, 255, 0.05)',
+    background: 'var(--surface)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '24px',
     textAlign: 'center',
@@ -1005,23 +1005,23 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: '40px',
   },
   errorTitle: {
-    fontSize: '20px',
+    fontSize: 'calc(20px * var(--font-scale))',
     fontWeight: '700',
     margin: '0 0 12px 0',
   },
   errorText: {
-    fontSize: '14px',
-    color: '#9ca3af',
+    fontSize: 'calc(14px * var(--font-scale))',
+    color: 'var(--text-muted)',
     lineHeight: '1.5',
     margin: '0 0 20px 0',
   },
   backBtnInline: {
-    background: '#3b82f6',
+    background: 'var(--accent)',
     border: 'none',
     borderRadius: '10px',
     color: '#ffffff',
     padding: '10px 20px',
-    fontSize: '14px',
+    fontSize: 'calc(14px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
   },
@@ -1032,10 +1032,10 @@ const styles: Record<string, React.CSSProperties> = {
     width: '20px',
     height: '20px',
     borderRadius: '50%',
-    background: 'rgba(239, 68, 68, 0.85)',
+    background: 'var(--danger)',
     border: 'none',
     color: '#ffffff',
-    fontSize: '11px',
+    fontSize: 'calc(11px * var(--font-scale))',
     fontWeight: 'bold',
     display: 'flex',
     alignItems: 'center',
