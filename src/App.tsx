@@ -12,9 +12,17 @@ import { OrderDetail } from './screens/OrderDetail';
 import { Settings } from './screens/Settings';
 import { Templates } from './screens/Templates';
 import { usePhotoSync } from './photos/usePhotos';
+import { useStore } from './store/useStore';
+import { applyTheme } from './theme/applyTheme';
 
 function App() {
   usePhotoSync();
+  const settings = useStore((s) => s.settings);
+
+  React.useEffect(() => {
+    applyTheme(settings?.theme, settings?.textScale);
+  }, [settings?.theme, settings?.textScale]);
+
   return (
     <BrowserRouter>
       <AuthGate>
