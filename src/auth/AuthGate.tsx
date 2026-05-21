@@ -3,6 +3,7 @@ import { onAuthStateChanged, type User } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import { useStore } from '../store/useStore';
 import { Login } from '../screens/Login';
+import { ensureSeeded } from '../firebase/seed';
 
 export function AuthGate({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null | undefined>(undefined);
@@ -11,7 +12,9 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (user) {
-      return useStore.getState().init();
+      const unsub = useStore.getState().init();
+      ensureSeeded().catch((err) => console.error('Database seeding failed:', err));
+      return unsub;
     }
   }, [user]);
 
