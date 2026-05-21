@@ -142,9 +142,9 @@ export function Orders() {
                 }}
                 style={{
                   ...styles.tabButton,
-                  background: isActive ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${isActive ? '#3b82f6' : 'rgba(255,255,255,0.06)'}`,
-                  color: isActive ? '#ffffff' : '#9ca3af',
+                  background: isActive ? 'linear-gradient(135deg, var(--accent), var(--accent))' : 'var(--surface-2)',
+                  border: `1px solid ${isActive ? 'var(--accent)' : 'var(--border)'}`,
+                  color: isActive ? '#ffffff' : 'var(--text-muted)',
                 }}
               >
                 {tab === 'active'
@@ -165,9 +165,9 @@ export function Orders() {
               onClick={() => setSortBy('deadline')}
               style={{
                 ...styles.sortBtn,
-                background: sortBy === 'deadline' ? 'rgba(255,255,255,0.1)' : 'transparent',
-                borderColor: sortBy === 'deadline' ? 'rgba(255,255,255,0.15)' : 'transparent',
-                color: sortBy === 'deadline' ? '#ffffff' : '#9ca3af',
+                background: sortBy === 'deadline' ? 'var(--surface)' : 'transparent',
+                borderColor: sortBy === 'deadline' ? 'var(--border)' : 'transparent',
+                color: sortBy === 'deadline' ? 'var(--text)' : 'var(--text-muted)',
               }}
             >
               📅 {t('orders.sortByDeadline') || 'Deadline'}
@@ -176,9 +176,9 @@ export function Orders() {
               onClick={() => setSortBy('created')}
               style={{
                 ...styles.sortBtn,
-                background: sortBy === 'created' ? 'rgba(255,255,255,0.1)' : 'transparent',
-                borderColor: sortBy === 'created' ? 'rgba(255,255,255,0.15)' : 'transparent',
-                color: sortBy === 'created' ? '#ffffff' : '#9ca3af',
+                background: sortBy === 'created' ? 'var(--surface)' : 'transparent',
+                borderColor: sortBy === 'created' ? 'var(--border)' : 'transparent',
+                color: sortBy === 'created' ? 'var(--text)' : 'var(--text-muted)',
               }}
             >
               🆕 {t('orders.sortByCreated') || 'Date Created'}
@@ -215,14 +215,14 @@ export function Orders() {
                             rollup === 'delivered'
                               ? 'rgba(16, 185, 129, 0.15)'
                               : rollup === 'ready'
-                              ? 'rgba(139, 92, 246, 0.15)'
+                              ? 'rgba(59, 130, 246, 0.15)'
                               : 'rgba(245, 158, 11, 0.15)',
                           color:
                             rollup === 'delivered'
-                              ? '#10b981'
+                              ? 'var(--success)'
                               : rollup === 'ready'
-                              ? '#8b5cf6'
-                              : '#f59e0b',
+                              ? 'var(--accent)'
+                              : 'var(--warning)',
                         }}
                       >
                         {t(`orders.status.${rollup}`)}
@@ -240,7 +240,7 @@ export function Orders() {
                     <span style={styles.deadline}>📅 {order.deadline}</span>
                     {balance > 0 && (
                       <span style={styles.balanceDue}>
-                        {t('orders.balance')}: <strong style={{ color: '#fbbf24' }}>₹{balance}</strong>
+                        {t('orders.balance')}: <strong style={{ color: 'var(--warning)' }}>₹{balance}</strong>
                       </span>
                     )}
                   </div>
@@ -268,8 +268,8 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     padding: '24px 16px 88px 16px',
     minHeight: '100vh',
-    background: 'radial-gradient(circle at top right, #1f2937, #111827)',
-    color: '#ffffff',
+    background: 'var(--bg)',
+    color: 'var(--text)',
     fontFamily: '"Inter", "Noto Sans Gujarati", sans-serif',
     boxSizing: 'border-box',
     display: 'flex',
@@ -287,17 +287,17 @@ const styles: Record<string, React.CSSProperties> = {
     boxSizing: 'border-box',
   },
   title: {
-    fontSize: '24px',
+    fontSize: 'calc(24px * var(--font-scale))',
     fontWeight: '800',
     margin: 0,
   },
   newOrderBtn: {
-    background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+    background: 'var(--accent)',
     color: '#ffffff',
     border: 'none',
     borderRadius: '12px',
     padding: '10px 16px',
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '700',
     cursor: 'pointer',
     boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
@@ -317,11 +317,11 @@ const styles: Record<string, React.CSSProperties> = {
   searchInput: {
     width: '100%',
     padding: '12px 40px 12px 14px',
-    background: 'rgba(255, 255, 255, 0.04)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--border)',
     borderRadius: '12px',
-    color: '#ffffff',
-    fontSize: '15px',
+    color: 'var(--text)',
+    fontSize: 'calc(15px * var(--font-scale))',
     outline: 'none',
     boxSizing: 'border-box',
     fontFamily: '"Inter", sans-serif',
@@ -333,22 +333,22 @@ const styles: Record<string, React.CSSProperties> = {
     transform: 'translateY(-50%)',
     background: 'none',
     border: 'none',
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
     cursor: 'pointer',
-    fontSize: '14px',
+    fontSize: 'calc(14px * var(--font-scale))',
   },
   tabsContainer: {
     display: 'flex',
     overflowX: 'auto',
     gap: '6px',
     paddingBottom: '4px',
-    scrollbarWidth: 'none', // hide on firefox
+    scrollbarWidth: 'none',
     boxSizing: 'border-box',
   },
   tabButton: {
     padding: '8px 14px',
     borderRadius: '10px',
-    fontSize: '13px',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
     whiteSpace: 'nowrap',
@@ -358,13 +358,13 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    background: 'rgba(0,0,0,0.15)',
+    background: 'var(--surface-2)',
     padding: '10px 12px',
     borderRadius: '12px',
   },
   sortLabel: {
-    fontSize: '12px',
-    color: '#9ca3af',
+    fontSize: 'calc(12px * var(--font-scale))',
+    color: 'var(--text-muted)',
     fontWeight: '600',
   },
   sortButtons: {
@@ -375,7 +375,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '6px 12px',
     border: '1px solid transparent',
     borderRadius: '8px',
-    fontSize: '11px',
+    fontSize: 'calc(11px * var(--font-scale))',
     fontWeight: '700',
     cursor: 'pointer',
   },
@@ -385,8 +385,8 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '12px',
   },
   orderCard: {
-    background: 'rgba(255, 255, 255, 0.02)',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '20px',
     padding: '16px',
     display: 'flex',
@@ -406,20 +406,20 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '8px',
   },
   tokenText: {
-    fontSize: '16px',
+    fontSize: 'calc(16px * var(--font-scale))',
     fontWeight: '800',
-    color: '#ffffff',
+    color: 'var(--text)',
   },
   statusBadge: {
-    fontSize: '10px',
+    fontSize: 'calc(10px * var(--font-scale))',
     fontWeight: '700',
     padding: '2px 8px',
     borderRadius: '6px',
   },
   cardPrice: {
-    fontSize: '15px',
+    fontSize: 'calc(15px * var(--font-scale))',
     fontWeight: '700',
-    color: '#ffffff',
+    color: 'var(--text)',
   },
   cardBody: {
     display: 'flex',
@@ -427,14 +427,14 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '4px',
   },
   custName: {
-    fontSize: '16px',
+    fontSize: 'calc(16px * var(--font-scale))',
     fontWeight: '700',
     margin: 0,
-    color: '#f3f4f6',
+    color: 'var(--text)',
   },
   garmentsText: {
-    fontSize: '13px',
-    color: '#9ca3af',
+    fontSize: 'calc(13px * var(--font-scale))',
+    color: 'var(--text-muted)',
     margin: 0,
     lineHeight: '1.4',
   },
@@ -442,33 +442,33 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderTop: '1px solid rgba(255,255,255,0.05)',
+    borderTop: '1px solid var(--border)',
     paddingTop: '10px',
   },
   deadline: {
-    fontSize: '12px',
-    color: '#9ca3af',
+    fontSize: 'calc(12px * var(--font-scale))',
+    color: 'var(--text-muted)',
     fontWeight: '500',
   },
   balanceDue: {
-    fontSize: '12px',
-    color: '#9ca3af',
+    fontSize: 'calc(12px * var(--font-scale))',
+    color: 'var(--text-muted)',
   },
   loadMoreBtn: {
     width: '100%',
     padding: '12px',
-    background: 'rgba(255, 255, 255, 0.03)',
-    border: '1px solid rgba(255, 255, 255, 0.06)',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--border)',
     borderRadius: '12px',
-    color: '#ffffff',
-    fontSize: '13px',
+    color: 'var(--text)',
+    fontSize: 'calc(13px * var(--font-scale))',
     fontWeight: '600',
     cursor: 'pointer',
     marginTop: '8px',
   },
   emptyCard: {
-    background: 'rgba(0,0,0,0.15)',
-    border: '1px dashed rgba(255,255,255,0.08)',
+    background: 'var(--surface-2)',
+    border: '1px dashed var(--border)',
     borderRadius: '20px',
     padding: '48px 16px',
     textAlign: 'center',
@@ -478,11 +478,11 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '12px',
   },
   emptyIcon: {
-    fontSize: '36px',
+    fontSize: 'calc(36px * var(--font-scale))',
   },
   emptyText: {
-    fontSize: '14px',
-    color: '#6b7280',
+    fontSize: 'calc(14px * var(--font-scale))',
+    color: 'var(--text-muted)',
     margin: 0,
   },
   loaderBox: {
@@ -501,7 +501,7 @@ const styles: Record<string, React.CSSProperties> = {
     animation: 'spin 1s linear infinite',
   },
   loaderText: {
-    fontSize: '14px',
-    color: '#9ca3af',
+    fontSize: 'calc(14px * var(--font-scale))',
+    color: 'var(--text-muted)',
   },
 };
