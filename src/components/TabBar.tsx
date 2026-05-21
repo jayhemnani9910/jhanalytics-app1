@@ -62,7 +62,7 @@ export function TabBar() {
             to={item.to}
             style={({ isActive }) => ({
               ...styles.tabLink,
-              color: isActive ? '#a855f7' : '#9ca3af',
+              color: isActive ? 'var(--accent)' : 'var(--text-muted)',
             })}
           >
             {item.icon}
@@ -81,11 +81,11 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     right: 0,
     height: '64px',
-    background: 'rgba(17, 24, 39, 0.8)',
+    background: 'color-mix(in srgb, var(--surface) 90%, transparent)',
     backdropFilter: 'blur(12px)',
-    borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+    borderTop: '1px solid var(--border)',
     zIndex: 1000,
-    boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.4)',
+    boxShadow: 'none',
   },
   container: {
     display: 'grid',
@@ -110,7 +110,7 @@ const styles: Record<string, React.CSSProperties> = {
     height: '20px',
   },
   label: {
-    fontSize: '11px',
+    fontSize: 'calc(11px * var(--font-scale))',
     fontWeight: '600',
     letterSpacing: '0.2px',
   },
