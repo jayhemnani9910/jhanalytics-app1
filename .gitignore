@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+dist-ssr/
+*.local
+
+# env / secrets
+.env
+.env.*
+!.env.example
+*serviceAccount*.json
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.firebase/
+
+# test / coverage
+coverage/
+playwright-report/
+test-results/
+/blob-report/
+.playwright/
+
+# editor / os
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
