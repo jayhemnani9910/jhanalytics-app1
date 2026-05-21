@@ -1,0 +1,58 @@
+import React from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+
+export function OrderEditor() {
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const customerId = searchParams.get('customerId');
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.title}>
+          {id ? 'Edit Order' : 'New Order'}
+        </h1>
+        <p style={styles.text}>
+          Order Editor screen content for Order ID: {id || 'New'} {customerId ? `(Customer ID: ${customerId})` : ''} will be placed here.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    padding: '24px 16px 88px 16px',
+    minHeight: '100vh',
+    background: 'radial-gradient(circle at top right, #1f2937, #111827)',
+    color: '#ffffff',
+    fontFamily: '"Inter", sans-serif',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+  },
+  card: {
+    width: '100%',
+    maxWidth: '500px',
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '16px',
+    padding: '24px',
+    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+    boxSizing: 'border-box',
+    marginTop: '20px',
+  },
+  title: {
+    fontSize: '24px',
+    fontWeight: '600',
+    margin: '0 0 12px 0',
+  },
+  text: {
+    fontSize: '14px',
+    color: '#9ca3af',
+    lineHeight: '1.5',
+    margin: 0,
+  },
+};

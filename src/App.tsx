@@ -1,51 +1,78 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthGate } from './auth/AuthGate';
+import { TabBar } from './components/TabBar';
+import { ConnectionBadge } from './components/ConnectionBadge';
+import { Dashboard } from './screens/Dashboard';
+import { Customers } from './screens/Customers';
+import { CustomerDetail } from './screens/CustomerDetail';
+import { Orders } from './screens/Orders';
+import { OrderEditor } from './screens/OrderEditor';
+import { OrderDetail } from './screens/OrderDetail';
+import { Settings } from './screens/Settings';
 
 function App() {
   return (
-    <AuthGate>
-      <div style={styles.container}>
-        <div style={styles.card}>
-          <h1 style={styles.title}>Tailor Measurement App</h1>
-          <p style={styles.text}>Welcome back! You are authenticated.</p>
+    <BrowserRouter>
+      <AuthGate>
+        <div style={styles.appLayout}>
+          <header style={styles.header}>
+            <span style={styles.logoText}>Pareshbhai Tailor</span>
+            <ConnectionBadge />
+          </header>
+          <main style={styles.main}>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/customers" element={<Customers />} />
+              <Route path="/customers/:id" element={<CustomerDetail />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/orders/new" element={<OrderEditor />} />
+              <Route path="/orders/:id" element={<OrderDetail />} />
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+          </main>
+          <TabBar />
         </div>
-      </div>
-    </AuthGate>
+      </AuthGate>
+    </BrowserRouter>
   );
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  container: {
+  appLayout: {
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    background: 'radial-gradient(circle at top right, #1f2937, #111827)',
+    color: '#ffffff',
+    fontFamily: '"Inter", "Noto Sans Gujarati", sans-serif',
+  },
+  header: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    background: 'radial-gradient(circle at top right, #1f2937, #111827)',
-    padding: '16px',
-    boxSizing: 'border-box',
-  },
-  card: {
-    width: '100%',
-    maxWidth: '400px',
-    background: 'rgba(255, 255, 255, 0.05)',
+    justifyContent: 'space-between',
+    padding: '16px 20px',
+    background: 'rgba(17, 24, 39, 0.4)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: '16px',
-    padding: '32px',
-    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
-    textAlign: 'center',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+    position: 'sticky',
+    top: 0,
+    zIndex: 900,
     boxSizing: 'border-box',
   },
-  title: {
-    fontSize: '24px',
-    fontWeight: '600',
-    color: '#ffffff',
-    margin: '0 0 16px 0',
+  logoText: {
+    fontSize: '18px',
+    fontWeight: '700',
+    letterSpacing: '-0.3px',
+    background: 'linear-gradient(135deg, #c084fc, #a855f7)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
-  text: {
-    fontSize: '16px',
-    color: '#9ca3af',
-    margin: 0,
+  main: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    boxSizing: 'border-box',
   },
 };
 
