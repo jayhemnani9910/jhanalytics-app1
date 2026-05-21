@@ -67,6 +67,7 @@ export const en: Record<string, string> = {
   'orders.quantity': 'Quantity',
   'orders.price': 'Price per item (₹)',
   'orders.measurements': 'Measurements',
+  'orders.measureMode': 'Measure Mode',
   'orders.addCustomRow': 'Add Custom Row',
   'orders.prefilled': 'Pre-filled from last order',
   'orders.requiredDeadline': 'Delivery deadline is required',

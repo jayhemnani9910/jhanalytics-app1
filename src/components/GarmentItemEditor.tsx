@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import type { OrderItem, Template, MeasurementRow, Order, OrderStatus } from '../types';
 import { useT } from '../i18n/useT';
 import { rowsFromTemplate, prefillRows } from '../domain/measurements';
+import { MeasureMode } from './MeasureMode';
 
 interface GarmentItemEditorProps {
   item: OrderItem;
@@ -23,6 +24,7 @@ export function GarmentItemEditor({
   const t = useT();
   const [prefillFlag, setPrefillFlag] = useState(false);
   const valueInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [isMeasureModeOpen, setIsMeasureModeOpen] = useState(false);
 
   // Suggest templates matching gender preference first
   const sortedTemplates = [...templates].sort((a, b) => {
@@ -186,13 +188,24 @@ export function GarmentItemEditor({
         <div style={styles.measurementsSection}>
           <div style={styles.measurementsHeader}>
             <h4 style={styles.sectionTitle}>{t('orders.measurements')}</h4>
-            <button
-              type="button"
-              onClick={addCustomMeasurement}
-              style={styles.addCustomRowBtn}
-            >
-              + {t('orders.addCustomRow')}
-            </button>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {item.measurements.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setIsMeasureModeOpen(true)}
+                  style={styles.measureModeBtn}
+                >
+                  📏 {t('orders.measureMode') || 'Measure Mode'}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={addCustomMeasurement}
+                style={styles.addCustomRowBtn}
+              >
+                + {t('orders.addCustomRow')}
+              </button>
+            </div>
           </div>
 
           <div style={styles.rowsGrid}>
@@ -264,6 +277,13 @@ export function GarmentItemEditor({
           </div>
         </div>
       </div>
+      {isMeasureModeOpen && (
+        <MeasureMode
+          rows={item.measurements}
+          onChange={(updatedRows) => onChange({ ...item, measurements: updatedRows })}
+          onClose={() => setIsMeasureModeOpen(false)}
+        />
+      )}
     </div>
   );
 }
@@ -484,5 +504,19 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '14px',
     cursor: 'pointer',
     padding: '4px',
+  },
+  measureModeBtn: {
+    background: 'rgba(59, 130, 246, 0.15)',
+    border: '1px solid rgba(59, 130, 246, 0.3)',
+    borderRadius: '8px',
+    color: '#60a5fa',
+    padding: '6px 12px',
+    fontSize: '12px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    transition: 'background 0.2s',
   },
 };

@@ -67,6 +67,7 @@ export const gu: Record<string, string> = {
   'orders.quantity': 'જથ્થો (Quantity)',
   'orders.price': 'કપડાં દીઠ કિંમત (₹)',
   'orders.measurements': 'માપણી વિગતો',
+  'orders.measureMode': 'માપણી મોડ',
   'orders.addCustomRow': 'બીજું માપ ઉમેરો',
   'orders.prefilled': 'અગાઉના ઓર્ડર પરથી માપ આપમેળે ભરેલ છે',
   'orders.requiredDeadline': 'ડિલિવરી છેલ્લી તારીખ ફરજિયાત છે',
