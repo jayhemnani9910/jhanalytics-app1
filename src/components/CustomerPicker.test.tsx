@@ -1,13 +1,13 @@
-import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CustomerPicker } from './CustomerPicker';
 import { useStore } from '../store/useStore';
+import type { Customer } from '../types';
 
 describe('CustomerPicker', () => {
-  const mockCustomers = [
-    { id: '1', name: 'Paresh Bhai', phone: '9876543210', gender: 'male', notes: '', createdAt: 0, updatedAt: 0 },
-    { id: '2', name: 'Jhanvi Patel', phone: '1234567890', gender: 'female', notes: '', createdAt: 0, updatedAt: 0 },
+  const mockCustomers: Customer[] = [
+    { id: '1', name: 'Paresh Bhai', nameLower: 'paresh bhai', phone: '9876543210', gender: 'male', notes: '', createdAt: 0, updatedAt: 0 },
+    { id: '2', name: 'Jhanvi Patel', nameLower: 'jhanvi patel', phone: '1234567890', gender: 'female', notes: '', createdAt: 0, updatedAt: 0 },
   ];
 
   beforeEach(() => {

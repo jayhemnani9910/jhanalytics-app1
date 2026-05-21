@@ -3,6 +3,7 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useT } from '../i18n/useT';
 import { GarmentItemEditor } from '../components/GarmentItemEditor';
+import { CustomerPicker } from '../components/CustomerPicker';
 import { generateToken } from '../domain/token';
 import { orderStatusRollup } from '../domain/status';
 import { orderTotal, orderBalance } from '../domain/money';
@@ -84,10 +85,6 @@ export function OrderEditor() {
   const currentCustomer = customers.find((c) => c.id === customerId);
   const customerOrders = orders.filter((o) => o.customerId === customerId);
 
-  // Sort customers alphabetically for selection
-  const sortedCustomers = [...customers].sort((a, b) =>
-    a.nameLower.localeCompare(b.nameLower)
-  );
 
   // Live total & balance calculation
   const mockOrder: Order = {
@@ -209,26 +206,11 @@ export function OrderEditor() {
         <div style={styles.sectionCard}>
           <div style={styles.formGroup}>
             <label style={styles.label}>{t('orders.customer')} *</label>
-            {existingOrder ? (
-              <div style={styles.lockedCustomer}>
-                <span style={styles.lockedCustomerName}>{currentCustomer?.name}</span>
-                <span style={styles.lockedCustomerLabel}>Locked</span>
-              </div>
-            ) : (
-              <select
-                value={customerId}
-                onChange={(e) => setCustomerId(e.target.value)}
-                style={styles.select}
-                required
-              >
-                <option value="">-- {t('orders.selectCustomer')} --</option>
-                {sortedCustomers.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name} {c.phone ? `(${c.phone})` : ''}
-                  </option>
-                ))}
-              </select>
-            )}
+            <CustomerPicker
+              value={customerId}
+              onSelect={setCustomerId}
+              disabled={!!existingOrder}
+            />
           </div>
         </div>
 

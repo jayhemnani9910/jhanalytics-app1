@@ -3,7 +3,6 @@ import { useStore } from '../store/useStore';
 import { useT } from '../i18n/useT';
 import { matchesQuery } from '../domain/search';
 import { createCustomer } from '../firebase/repo';
-import type { Customer } from '../types';
 
 interface CustomerPickerProps {
   value: string; // selected customerId
