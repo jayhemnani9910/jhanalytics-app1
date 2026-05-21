@@ -1,0 +1,15 @@
+export const en: Record<string, string> = {
+  'dashboard.overdue': 'Overdue',
+  'dashboard.dueSoon': 'Due soon',
+  'dashboard.ready': 'Ready for pickup',
+  'dashboard.balanceDue': 'Balance due',
+  'dashboard.recent': 'Recent',
+  'nav.home': 'Home',
+  'nav.customers': 'Customers',
+  'nav.orders': 'Orders',
+  'nav.settings': 'Settings',
+  'common.newOrder': 'New order',
+  'common.save': 'Save',
+  'common.cancel': 'Cancel',
+  '__missing__': 'Fallback Value',
+};
