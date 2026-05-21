@@ -6,6 +6,7 @@ import { bucketOrders } from '../domain/dashboard';
 import { todayStr } from '../domain/deadline';
 import { orderTotal, orderBalance } from '../domain/money';
 import { orderStatusRollup } from '../domain/status';
+import { GlobalSearch } from '../components/GlobalSearch';
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -135,6 +136,9 @@ export function Dashboard() {
             ➕ {t('common.newOrder')}
           </button>
         </div>
+
+        {/* Global search */}
+        <GlobalSearch />
 
         {/* Priority Sections */}
         <OrderSection
